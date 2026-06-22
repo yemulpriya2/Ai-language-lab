@@ -1,0 +1,57 @@
+{% extends 'learning/base.html' %}
+
+{% block title %}{{ language.name }} Path | AI Language Lab{% endblock %}
+
+{% block content %}
+<section class="split">
+    <article class="card">
+        <p class="kicker">Learner</p>
+        <h1>{{ profile.name }} - {{ language.name }}</h1>
+        <p>{{ language.description }}</p>
+        <p class="meta">Current Level: <strong>{{ profile.level }}</strong></p>
+        <p class="meta">Performance Score: <strong>{{ profile.performance_score }}</strong>/100</p>
+        <p class="meta">Accuracy: <strong>{{ profile.accuracy }}%</strong></p>
+        <p class="meta">Next Step: {{ next_step }} / {{ total_steps }}</p>
+        <a href="{% url 'learning:dashboard' profile.id %}" class="primary-btn">Open Full Tracker</a>
+    </article>
+
+    <article class="card accent-card">
+        <p class="kicker">AI Fun Coach</p>
+        <h2>{{ ai_tips.message }}</h2>
+        <p>{{ ai_tips.mission }}</p>
+        <p class="meta">{{ ai_tips.next_level_hint }}</p>
+    </article>
+</section>
+
+<section>
+    <h2>Step-by-Step Structure</h2>
+    <div class="timeline">
+        {% for lesson in lessons %}
+        <article class="timeline-item {% if lesson.step_number <= profile.completed_lessons %}done{% elif lesson.step_number == next_step %}active{% else %}locked{% endif %}">
+            <p class="meta">Step {{ lesson.step_number }} | {{ lesson.get_difficulty_display }}</p>
+            <h3>{{ lesson.title }}</h3>
+            <p>{{ lesson.content|truncatechars:110 }}</p>
+            <a href="{% url 'learning:lesson_detail' language.id profile.id lesson.id %}" class="link-btn">Open Lesson</a>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="card">
+    <p class="kicker">Ask AI Tutor</p>
+    <form method="post" action="{% url 'learning:ask_tutor' profile.id %}" class="form-grid">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{% url 'learning:language_detail' language.id profile.id %}">
+        {{ tutor_form.prompt }}
+        <button class="primary-btn" type="submit">Get AI Help</button>
+    </form>
+
+    {% if latest_tutor_chat %}
+    <div class="tutor-reply">
+        <p class="meta"><strong>Provider:</strong> {{ latest_tutor_chat.provider }} {% if latest_tutor_chat.used_external_ai %}(Live API){% else %}(Fallback){% endif %}</p>
+        <p><strong>Your question:</strong> {{ latest_tutor_chat.prompt }}</p>
+        <p><strong>Tutor answer:</strong> {{ latest_tutor_chat.response }}</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

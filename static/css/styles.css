@@ -1,0 +1,363 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600&display=swap');
+
+:root {
+    --bg: #f4f7ef;
+    --paper: #ffffff;
+    --ink: #182026;
+    --brand: #0d8f8a;
+    --brand-dark: #0a6a66;
+    --accent: #ff7b3d;
+    --sun: #ffcb47;
+    --ok: #1f9d55;
+    --warn: #d97706;
+    --err: #cf3f3f;
+    --line: #d8e0d4;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--ink);
+    background:
+        radial-gradient(circle at 10% 10%, #ffeab0, transparent 35%),
+        radial-gradient(circle at 85% 15%, #b2efe7, transparent 30%),
+        linear-gradient(160deg, #f7faf4 0%, #edf3e5 100%);
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+    font-family: 'Fraunces', serif;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(9px);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.brand {
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.topbar-links {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.nav-btn,
+.primary-btn,
+.link-btn {
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.nav-btn,
+.link-btn {
+    padding: 0.6rem 0.9rem;
+    background: #ecf7f6;
+    color: var(--brand-dark);
+}
+
+.primary-btn {
+    padding: 0.78rem 1rem;
+    background: linear-gradient(135deg, var(--brand) 0%, #1fa5a0 100%);
+    color: white;
+    margin-top: 0.5rem;
+}
+
+.page {
+    max-width: 1100px;
+    margin: 1.3rem auto 3rem;
+    padding: 0 1rem;
+    animation: rise 450ms ease-out;
+}
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+}
+
+.kicker {
+    color: var(--brand-dark);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 0.79rem;
+}
+
+.lead {
+    max-width: 65ch;
+}
+
+.split {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.grid-three {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 1rem;
+    box-shadow: 0 10px 24px rgba(24, 32, 38, 0.05);
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.76);
+    backdrop-filter: blur(10px);
+}
+
+.accent-card {
+    background: linear-gradient(150deg, #fff3de 0%, #ffe5cf 100%);
+    border-color: #ffd6aa;
+}
+
+.meta {
+    color: #485861;
+    margin: 0.35rem 0;
+}
+
+.form-grid {
+    display: grid;
+    gap: 0.5rem;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 0.6rem 0.65rem;
+    border-radius: 10px;
+    border: 1px solid #cdd9ce;
+    font-family: inherit;
+}
+
+textarea {
+    width: 100%;
+    padding: 0.65rem;
+    border-radius: 10px;
+    border: 1px solid #cdd9ce;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.timeline {
+    display: grid;
+    gap: 0.8rem;
+}
+
+.timeline-item {
+    padding: 0.9rem;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: #fff;
+}
+
+.timeline-item.done {
+    border-color: #b8e5ca;
+    background: #f3fff7;
+}
+
+.timeline-item.active {
+    border-color: #9de2df;
+    background: #effbfb;
+}
+
+.timeline-item.locked {
+    opacity: 0.65;
+}
+
+.fun-block {
+    background: #ecf6ff;
+    border-left: 5px solid #42a5f5;
+    border-radius: 10px;
+    padding: 0.7rem 0.9rem;
+    margin: 1rem 0;
+}
+
+.quiz-options {
+    display: grid;
+    gap: 0.6rem;
+}
+
+.quiz-options label {
+    background: #f9fbf5;
+    border: 1px solid #d8e2d0;
+    border-radius: 10px;
+    padding: 0.6rem;
+}
+
+.meter-wrap {
+    margin: 0.9rem 0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+}
+
+.progress-bar::-webkit-progress-bar {
+    background: #e7ece7;
+    border-radius: 999px;
+}
+
+.progress-bar::-webkit-progress-value {
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--sun));
+}
+
+.progress-bar::-moz-progress-bar {
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--sun));
+}
+
+.progress-bar.alt::-webkit-progress-value {
+    background: linear-gradient(90deg, #2fa487, #6cd5b2);
+}
+
+.progress-bar.alt::-moz-progress-bar {
+    background: linear-gradient(90deg, #2fa487, #6cd5b2);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    padding: 0.6rem;
+}
+
+.message-stack {
+    display: grid;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.message {
+    border-radius: 10px;
+    padding: 0.65rem 0.8rem;
+    font-weight: 500;
+}
+
+.message.success {
+    background: #e9f8ee;
+    color: #16663a;
+}
+
+.message.warning {
+    background: #fff5e8;
+    color: #975205;
+}
+
+.message.error {
+    background: #ffebeb;
+    color: #8f1f1f;
+}
+
+.auth-card {
+    max-width: 700px;
+    margin: 1rem auto;
+}
+
+.auth-card p {
+    margin: 0.3rem 0;
+}
+
+.inline-link {
+    color: var(--brand-dark);
+    font-weight: 700;
+}
+
+.badge-list {
+    display: grid;
+    gap: 0.6rem;
+}
+
+.badge-item {
+    background: #f8f3df;
+    border: 1px solid #eedda5;
+    border-radius: 10px;
+    padding: 0.7rem;
+}
+
+.tutor-reply {
+    margin-top: 1rem;
+    background: #eef6ff;
+    border: 1px solid #cde1f9;
+    border-radius: 10px;
+    padding: 0.8rem;
+}
+
+.certificate {
+    margin: 0 auto 1rem;
+    max-width: 920px;
+    text-align: center;
+    background: linear-gradient(135deg, #fff7dc 0%, #fff1bf 100%);
+    border: 2px solid #f2d479;
+    border-radius: 20px;
+    padding: 2rem 1rem;
+}
+
+.cert-badges {
+    list-style: none;
+    padding: 0;
+    margin: 1rem auto;
+    max-width: 700px;
+}
+
+.cert-badges li {
+    padding: 0.4rem;
+}
+
+@media (max-width: 920px) {
+    .split,
+    .grid-three {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        flex-wrap: wrap;
+        gap: 0.6rem;
+    }
+}

@@ -1,0 +1,26 @@
+{% extends 'learning/base.html' %}
+
+{% block title %}My Profiles | AI Language Lab{% endblock %}
+
+{% block content %}
+<section class="card">
+    <p class="kicker">My Learning Profiles</p>
+    <h1>{{ user.username }} language tracks</h1>
+
+    {% if profiles %}
+    <div class="grid-three">
+        {% for profile in profiles %}
+        <article class="card">
+            <h3>{{ profile.language.name }}</h3>
+            <p class="meta">Level: {{ profile.level }}</p>
+            <p class="meta">Score: {{ profile.performance_score }}/100</p>
+            <p class="meta">Completion: {{ profile.completed_lessons }} steps</p>
+            <a href="{% url 'learning:dashboard' profile.id %}" class="primary-btn">Open Dashboard</a>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p>You do not have profiles yet. Start one from the home page.</p>
+    {% endif %}
+</section>
+{% endblock %}

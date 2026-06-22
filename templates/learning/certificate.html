@@ -1,0 +1,29 @@
+{% extends 'learning/base.html' %}
+
+{% block title %}Certificate | AI Language Lab{% endblock %}
+
+{% block content %}
+<section class="certificate">
+    <p class="kicker">Achievement Certificate</p>
+    <h1>Certificate of Language Progress</h1>
+    <p>This certifies that</p>
+    <h2>{{ profile.name }}</h2>
+    <p>has reached <strong>{{ profile.level }}</strong> level in <strong>{{ profile.language.name }}</strong></p>
+    <p>with overall performance score <strong>{{ profile.performance_score }}/100</strong>.</p>
+
+    {% if badges %}
+    <h3>Unlocked Badges</h3>
+    <ul class="cert-badges">
+        {% for badge in badges %}
+        <li>{{ badge.title }} - {{ badge.description }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <p class="meta">Issued by AI Language Lab on {{ profile.updated_at|date:"Y-m-d" }}</p>
+</section>
+
+<section class="card">
+    <a href="{% url 'learning:dashboard' profile.id %}" class="link-btn">Back to Dashboard</a>
+</section>
+{% endblock %}

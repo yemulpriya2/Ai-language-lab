@@ -1,0 +1,68 @@
+{% extends 'learning/base.html' %}
+
+{% block title %}Start Learning | AI Language Lab{% endblock %}
+
+{% block content %}
+<section class="hero split">
+    <div>
+        <p class="kicker">Step-by-Step AI Learning</p>
+        <h1>Learn languages with fun, structure, and smart performance tracking.</h1>
+        <p class="lead">
+            Pick a language, follow a guided path, complete quizzes, and get AI-powered funny missions.
+            Your level updates automatically based on your real performance.
+        </p>
+    </div>
+    <div class="card glass">
+        <h2>Start Your Journey</h2>
+        <form method="post" class="form-grid">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="meta" style="color:#c62828;">{{ form.non_field_errors }}</div>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <p class="meta">Logged in as <strong>{{ user.username }}</strong>. New tracks will attach to your account.</p>
+            {% else %}
+                <label for="id_name">Your Name</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="meta" style="color:#c62828;">{{ form.name.errors }}</div>
+                {% endif %}
+            {% endif %}
+
+            <label for="id_language">Choose Language</label>
+            {{ form.language }}
+            {% if form.language.errors %}
+                <div class="meta" style="color:#c62828;">{{ form.language.errors }}</div>
+            {% endif %}
+
+            <button type="submit" class="primary-btn">Enter Learning Path</button>
+        </form>
+    </div>
+</section>
+
+<section class="grid-three">
+    {% for item in languages %}
+    <article class="card">
+        <h3>{{ item.name }}</h3>
+        <p>{{ item.description }}</p>
+        <p class="meta">Structured Steps: {{ item.total_lessons }}</p>
+    </article>
+    {% endfor %}
+</section>
+
+{% if user.is_authenticated and my_profiles %}
+<section class="card">
+    <h2>Your Existing Learning Profiles</h2>
+    <div class="grid-three">
+        {% for profile in my_profiles %}
+        <article class="card">
+            <h3>{{ profile.language.name }}</h3>
+            <p class="meta">Level: {{ profile.level }}</p>
+            <p class="meta">Score: {{ profile.performance_score }}/100</p>
+            <a href="{% url 'learning:dashboard' profile.id %}" class="link-btn">Open Tracker</a>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% endblock %}

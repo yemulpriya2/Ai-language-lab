@@ -1,0 +1,16 @@
+{% extends 'learning/base.html' %}
+
+{% block title %}Sign Up | AI Language Lab{% endblock %}
+
+{% block content %}
+<section class="card auth-card">
+    <p class="kicker">Create Account</p>
+    <h1>Sign up to keep your language progress private and synced.</h1>
+    <form method="post" class="form-grid">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="primary-btn">Create Account</button>
+    </form>
+    <p class="meta">Already registered? <a class="inline-link" href="{% url 'learning:login' %}">Login here</a>.</p>
+</section>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'learning/base.html' %}
+
+{% block title %}Lesson {{ lesson.step_number }} | AI Language Lab{% endblock %}
+
+{% block content %}
+<section class="split">
+    <article class="card">
+        <p class="kicker">{{ language.name }} - Step {{ lesson.step_number }}</p>
+        <h1>{{ lesson.title }}</h1>
+        
+        <!-- Bilingual lesson content -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+            <div style="border-left: 4px solid #ff6b6b; padding-left: 15px;">
+                <h3 style="margin-top: 0; color: #ff6b6b;">{{ language.name }}</h3>
+                <p style="white-space: pre-wrap; font-size: 16px; line-height: 1.6;">{{ lesson.content_target_language }}</p>
+            </div>
+            <div style="border-left: 4px solid #4ecdc4; padding-left: 15px;">
+                <h3 style="margin-top: 0; color: #4ecdc4;">English</h3>
+                <p style="white-space: pre-wrap; font-size: 16px; line-height: 1.6;">{{ lesson.content_english }}</p>
+            </div>
+        </div>
+
+        <!-- Bilingual fun activity -->
+        <div class="fun-block" style="margin-top: 30px;">
+            <h3> Funny AI Activity</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 15px 0;">
+                <div style="background-color: #ffe8e8; padding: 15px; border-radius: 8px;">
+                    <strong style="color: #ff6b6b;">{{ language.name }} Challenge:</strong>
+                    <p style="margin: 10px 0 0 0;">{{ lesson.funny_activity_target_language }}</p>
+                </div>
+                <div style="background-color: #e8f5f3; padding: 15px; border-radius: 8px;">
+                    <strong style="color: #4ecdc4;">What it means:</strong>
+                    <p style="margin: 10px 0 0 0;">{{ lesson.funny_activity }}</p>
+                </div>
+            </div>
+        </div>
+
+        {% if can_mark_complete %}
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="complete_lesson">
+            <button class="primary-btn" type="submit">Mark Lesson Complete</button>
+        </form>
+        {% elif is_completed %}
+            <p class="meta">This lesson is already completed.</p>
+        {% else %}
+            <p class="meta">Locked until previous steps are completed.</p>
+        {% endif %}
+    </article>
+
+    {% if question and quiz_form %}
+    <article class="card glass">
+        <p class=\"kicker\">{% if ui_labels.quiz_header %}{{ ui_labels.quiz_header }}{% else %}Quick Quiz{% endif %} 🧠</p>
+        <h2 style="color: #2c3e50; margin-bottom: 20px;">{{ question.prompt }}</h2>
+        <p style="color: #7f8c8d; font-size: 14px; margin-bottom: 15px;"> {% if ui_labels.all_options %}{{ ui_labels.all_options }}{% else %}All options shown in{% endif %} {{ language.name }}</p>
+        <form method="post" class="quiz-options">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="submit_quiz">
+            {{ quiz_form.question_id }}
+
+            <label style="display: block; padding: 12px; margin: 10px 0; background-color: #f8f9fa; border-radius: 5px; cursor: pointer; border-left: 4px solid #3498db;">
+                <input type="radio" name="selected_option" value="A" required style="margin-right: 8px;"> 
+                <strong>A)</strong> {{ question.option_a }}
+            </label>
+            <label style="display: block; padding: 12px; margin: 10px 0; background-color: #f8f9fa; border-radius: 5px; cursor: pointer; border-left: 4px solid #9b59b6;">
+                <input type="radio" name="selected_option" value="B" style="margin-right: 8px;"> 
+                <strong>B)</strong> {{ question.option_b }}
+            </label>
+            <label style="display: block; padding: 12px; margin: 10px 0; background-color: #f8f9fa; border-radius: 5px; cursor: pointer; border-left: 4px solid #e74c3c;">
+                <input type="radio" name="selected_option" value="C" style="margin-right: 8px;"> 
+                <strong>C)</strong> {{ question.option_c }}
+            </label>
+            <label style="display: block; padding: 12px; margin: 10px 0; background-color: #f8f9fa; border-radius: 5px; cursor: pointer; border-left: 4px solid #f39c12;">
+                <input type="radio" name="selected_option" value="D" style="margin-right: 8px;"> 
+                <strong>D)</strong> {{ question.option_d }}
+            </label>
+
+            <button class="primary-btn" type="submit" style="margin-top: 20px;">{% if ui_labels.submit_btn %}{{ ui_labels.submit_btn }}{% else %}Submit{% endif %}</button>
+        </form>
+    </article>
+    {% endif %}
+</section>
+
+<a class="link-btn" href="{% url 'learning:language_detail' language.id profile.id %}">Back to Language Path</a>
+{% endblock %}

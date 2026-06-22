@@ -1,0 +1,104 @@
+{% extends 'learning/base.html' %}
+
+{% block title %}Tracker Dashboard | AI Language Lab{% endblock %}
+
+{% block content %}
+<section class="split">
+    <article class="card">
+        <p class="kicker">Performance Tracker</p>
+        <h1>{{ profile.name }} - {{ profile.language.name }}</h1>
+        <p class="meta">Level Tier: <strong>{{ profile.level }}</strong></p>
+        <p class="meta">Total Score: <strong>{{ profile.performance_score }}</strong>/100</p>
+
+        <div class="meter-wrap">
+            <p>Course Completion {{ completion_percent }}%</p>
+            <progress class="progress-bar" max="100" value="{{ completion_percent }}"></progress>
+        </div>
+
+        <div class="meter-wrap">
+            <p>Quiz Accuracy {{ profile.accuracy }}%</p>
+            <progress class="progress-bar alt" max="100" value="{{ profile.accuracy }}"></progress>
+        </div>
+
+        <p class="meta">Lessons completed: {{ profile.completed_lessons }}/{{ total_lessons }}</p>
+        <p class="meta">Quiz attempts: {{ profile.quiz_attempts }}</p>
+        <p class="meta">Correct answers: {{ profile.correct_answers }}</p>
+
+        <a href="{% url 'learning:language_detail' profile.language.id profile.id %}" class="link-btn">Continue Learning</a>
+        {% if can_get_certificate %}
+            <a href="{% url 'learning:certificate' profile.id %}" class="primary-btn">Generate Certificate</a>
+        {% endif %}
+    </article>
+
+    <article class="card accent-card">
+        <p class="kicker">AI Growth Suggestions</p>
+        <h2>{{ ai_tips.message }}</h2>
+        <p>{{ ai_tips.mission }}</p>
+        <p>{{ ai_tips.next_level_hint }}</p>
+    </article>
+</section>
+
+<section class="card">
+    <h2>Recent Activity Log</h2>
+    {% if logs %}
+    <table>
+        <thead>
+            <tr>
+                <th>Action</th>
+                <th>Correct</th>
+                <th>Points</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.notes }}</td>
+                <td>{% if log.is_correct %}Yes{% else %}No{% endif %}</td>
+                <td>{{ log.points }}</td>
+                <td>{{ log.created_at|date:"Y-m-d H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No activity yet. Start your first lesson.</p>
+    {% endif %}
+</section>
+
+<section class="split">
+    <article class="card">
+        <h2>Badges</h2>
+        {% if badges %}
+            <div class="badge-list">
+            {% for badge in badges %}
+                <div class="badge-item">
+                    <p><strong>{{ badge.title }}</strong></p>
+                    <p class="meta">{{ badge.description }}</p>
+                </div>
+            {% endfor %}
+            </div>
+        {% else %}
+            <p>No badges yet. Complete lessons and quizzes to unlock them.</p>
+        {% endif %}
+    </article>
+
+    <article class="card">
+        <h2>Ask AI Tutor</h2>
+        <form method="post" action="{% url 'learning:ask_tutor' profile.id %}" class="form-grid">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{% url 'learning:dashboard' profile.id %}">
+            {{ tutor_form.prompt }}
+            <button class="primary-btn" type="submit">Ask Tutor</button>
+        </form>
+
+        {% if latest_tutor_chat %}
+        <div class="tutor-reply">
+            <p class="meta"><strong>Provider:</strong> {{ latest_tutor_chat.provider }} {% if latest_tutor_chat.used_external_ai %}(Live API){% else %}(Fallback){% endif %}</p>
+            <p><strong>Your question:</strong> {{ latest_tutor_chat.prompt }}</p>
+            <p><strong>Tutor answer:</strong> {{ latest_tutor_chat.response }}</p>
+        </div>
+        {% endif %}
+    </article>
+</section>
+{% endblock %}

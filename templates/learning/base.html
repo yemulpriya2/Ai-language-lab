@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI Language Lab{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header class="topbar">
+        <a href="{% url 'learning:home' %}" class="brand">AI Language Lab</a>
+        <div class="topbar-links">
+            {% if profile %}
+                <a href="{% url 'learning:dashboard' profile.id %}" class="nav-btn">Performance Tracker</a>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <a href="{% url 'learning:my_profiles' %}" class="nav-btn">My Profiles</a>
+                <a href="{% url 'learning:logout' %}" class="nav-btn">Logout</a>
+            {% else %}
+                <a href="{% url 'learning:login' %}" class="nav-btn">Login</a>
+                <a href="{% url 'learning:signup' %}" class="nav-btn">Sign Up</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="page">
+        {% if messages %}
+            <section class="message-stack">
+                {% for message in messages %}
+                    <article class="message {{ message.tags }}">{{ message }}</article>
+                {% endfor %}
+            </section>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
